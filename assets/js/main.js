@@ -101,35 +101,13 @@
     });
   }
 
-  /* Booking widget: auto-calculate trip length from dates */
-  var bookingForm = document.getElementById('bookingForm');
-  if(bookingForm){
-    var days = document.getElementById('bk-days');
-    var startDate = document.getElementById('bk-start');
-    var endDate = document.getElementById('bk-end');
-    function updateDays(){
-      if(startDate && endDate && startDate.value && endDate.value){
-        var s = new Date(startDate.value), e = new Date(endDate.value);
-        var diff = Math.round((e - s) / 86400000);
-        if(diff > 0 && days){ days.value = diff; }
-      }
-    }
-    if(startDate) startDate.addEventListener('change', updateDays);
-    if(endDate) endDate.addEventListener('change', updateDays);
-
-    bookingForm.addEventListener('submit', function(e){
-      e.preventDefault();
-      var confirmBox = document.getElementById('bookingConfirm');
-      bookingForm.hidden = true;
-      if(confirmBox) confirmBox.hidden = false;
-    });
-  }
-
   /* Contact form (static demo) */
   var contactForm = document.getElementById('contactForm');
   if(contactForm){
     contactForm.addEventListener('submit', function(e){
       e.preventDefault();
+      var honeypot = document.getElementById('c-company');
+      if(honeypot && honeypot.value){ return; } /* silently drop likely-bot submissions */
       var confirmBox = document.getElementById('contactConfirm');
       contactForm.hidden = true;
       if(confirmBox) confirmBox.hidden = false;
@@ -139,12 +117,6 @@
   /* Footer year */
   document.querySelectorAll('[data-year]').forEach(function(el){
     el.textContent = new Date().getFullYear();
-  });
-
-  /* Set min date on date inputs to today */
-  var today = new Date().toISOString().split('T')[0];
-  document.querySelectorAll('input[type="date"]').forEach(function(el){
-    el.setAttribute('min', today);
   });
 
 })();
