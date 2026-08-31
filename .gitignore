@@ -1,1 +1,13 @@
+# Editor / tooling
 .claude/
+.vscode/
+.idea/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs / dependency dirs (none used today, kept for safety)
+node_modules/
+*.log

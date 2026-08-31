@@ -62,8 +62,12 @@
 
 /* ---------- Base / Reset ---------- */
 *, *::before, *::after{ box-sizing: border-box; }
-html{ scroll-behavior: smooth; overflow-x: hidden; }
+/* overflow-x: clip (not hidden) keeps horizontal overflow contained without
+   creating a scroll container — which would otherwise break position: sticky
+   on descendants such as .legal-nav. */
+html{ scroll-behavior: smooth; overflow-x: clip; }
 html, body{ margin:0; padding:0; }
+[hidden]{ display: none !important; }
 body{
   font-family: var(--font-body);
   background: var(--cream);
@@ -72,7 +76,7 @@ body{
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  overflow-x: clip;
   overflow-wrap: break-word;
 }
 img, svg{ display:block; max-width:100%; }
@@ -189,8 +193,9 @@ p{ color: var(--text-muted); }
   align-items:center;
   gap: clamp(2rem, 6vw, 6rem);
 }
-.split.rev .split-media{ order:2; }
-.split.rev .split-copy{ order:1; }
+/* .rev sections lead with .split-media in the DOM, so natural grid placement
+   already puts the media column first — no order overrides needed. (Previously
+   these rules forced the copy back to the left, defeating the alternation.) */
 .split-top{ align-items:start; }
 .split-booking{ grid-template-columns: 1.15fr .85fr; }
 .split-contact{ grid-template-columns: .9fr 1.1fr; }
@@ -634,7 +639,7 @@ p{ color: var(--text-muted); }
 .legal-body h3{ font-size:1.15rem; margin-top: var(--sp-4); margin-bottom: var(--sp-2); }
 .legal-body p, .legal-body li{ color: var(--text-muted); margin-bottom: .9rem; font-size:.97rem; }
 .legal-body li{ margin-left:1.4rem; list-style: disc; }
-.legal-nav{ position:sticky; top:8rem; display:flex; flex-direction:column; gap:.6rem; }
+.legal-nav{ position:sticky; top:8rem; align-self:start; display:flex; flex-direction:column; gap:.6rem; }
 .legal-nav a{ font-size:.86rem; color: var(--text-muted); padding: .3rem 0 .3rem .8rem; border-left:1px solid var(--line); }
 .legal-nav a:hover, .legal-nav a.is-active{ color: var(--ink); border-color: var(--brass); }
 .legal-updated{ font-size:.85rem; color: var(--text-muted); margin-bottom: var(--sp-4); }
@@ -659,7 +664,6 @@ p{ color: var(--text-muted); }
   .hero-grid{ grid-template-columns:1fr; }
   .hero-trust{ border-left:0; border-top:1px solid var(--line); padding-left:0; padding-top: var(--sp-3); flex-direction:row; flex-wrap:wrap; gap: var(--sp-4); }
   .split{ grid-template-columns:1fr; }
-  .split.rev .split-media, .split.rev .split-copy{ order:unset; }
   .footer-top{ grid-template-columns: 1fr 1fr; }
   .footer-brand{ grid-column: 1/-1; }
   .service-row{ grid-template-columns:1fr; }
